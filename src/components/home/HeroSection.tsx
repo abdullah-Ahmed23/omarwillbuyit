@@ -1,5 +1,5 @@
-import { useState, Suspense, lazy, useRef, useEffect, useMemo } from 'react'
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion'
+import { useState, Suspense, lazy, useMemo } from 'react'
+import { motion } from 'framer-motion'
 import { MapPin, ArrowRight, Shield, Clock, DollarSign, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
@@ -13,7 +13,6 @@ const trustBadges = [
 
 export default function HeroSection() {
     const [address, setAddress] = useState('')
-    const sectionRef = useRef<HTMLDivElement>(null)
     const floatingParticles = useMemo(() => Array.from({ length: 10 }, (_, i) => ({
         left: `${(i * 41) % 100}%`,
         animationDuration: `${9 + (i % 5) * 2}s`,
@@ -22,44 +21,13 @@ export default function HeroSection() {
         background: i % 3 === 0 ? '#06b6d4' : '#7c3aed',
     })), [])
 
-    /* --- Scroll parallax --- */
-    const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
-    const bgY = useTransform(scrollYProgress, [0, 1], [0, 300])
-    const textY = useTransform(scrollYProgress, [0, 1], [0, -100])
-    const orb1Y = useTransform(scrollYProgress, [0, 1], [0, 180])
-    const orb2Y = useTransform(scrollYProgress, [0, 1], [0, -120])
-    const orb3Y = useTransform(scrollYProgress, [0, 1], [0, 250])
-    const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
-    const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.9])
-
-    /* --- Mouse parallax --- */
-    const mouseX = useMotionValue(0)
-    const mouseY = useMotionValue(0)
-    const springX = useSpring(mouseX, { stiffness: 50, damping: 20 })
-    const springY = useSpring(mouseY, { stiffness: 50, damping: 20 })
-    const mouseOrbX = useTransform(springX, [-1, 1], [-40, 40])
-    const mouseOrbY = useTransform(springY, [-1, 1], [-30, 30])
-    const mouseTextX = useTransform(springX, [-1, 1], [-8, 8])
-    const mouseTextY = useTransform(springY, [-1, 1], [-6, 6])
-
-    useEffect(() => {
-        const onMove = (e: MouseEvent) => {
-            mouseX.set((e.clientX / window.innerWidth - 0.5) * 2)
-            mouseY.set((e.clientY / window.innerHeight - 0.5) * 2)
-        }
-        window.addEventListener('mousemove', onMove)
-        return () => window.removeEventListener('mousemove', onMove)
-    }, [mouseX, mouseY])
-
     return (
-        <section ref={sectionRef} className="relative min-h-screen flex items-center overflow-hidden bg-primary noise">
-            {/* Multi-layer parallax orbs */}
-            <motion.div style={{ y: orb1Y, x: mouseOrbX }} className="absolute top-[10%] right-[15%] w-[500px] h-[500px] bg-accent/10 rounded-full blur-[100px] animate-glow-breathe" />
-            <motion.div style={{ y: orb2Y, x: mouseOrbY }} className="absolute bottom-[20%] left-[10%] w-[400px] h-[400px] bg-cyan/8 rounded-full blur-[80px]" />
-            <motion.div style={{ y: orb3Y }} className="absolute top-[50%] left-[50%] w-[300px] h-[300px] bg-rose/5 rounded-full blur-[100px]" />
+        <section className="relative min-h-screen flex items-center overflow-hidden bg-primary noise">
+            <div className="absolute top-[10%] right-[15%] w-[500px] h-[500px] bg-accent/10 rounded-full blur-[100px]" />
+            <div className="absolute bottom-[20%] left-[10%] w-[400px] h-[400px] bg-cyan/8 rounded-full blur-[80px]" />
+            <div className="absolute top-[50%] left-[50%] w-[300px] h-[300px] bg-rose/5 rounded-full blur-[100px]" />
 
-            {/* Grid overlay with scroll */}
-            <motion.div style={{ y: bgY }} className="absolute inset-0 bg-grid-fine pointer-events-none" />
+            <div className="absolute inset-0 bg-grid-fine pointer-events-none" />
 
             {/* Floating particles */}
             {floatingParticles.map((particle, i) => (
@@ -78,8 +46,7 @@ export default function HeroSection() {
                 <Suspense fallback={null}><FloatingHouse /></Suspense>
             </div>
 
-            {/* Content with scroll + mouse parallax */}
-            <motion.div style={{ y: textY, x: mouseTextX, opacity, scale }} className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 lg:py-40">
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 lg:py-40">
                 <div className="max-w-3xl">
                     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
                         <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-accent/10 border border-accent/20 text-accent-light text-sm font-semibold mb-6">
@@ -123,7 +90,7 @@ export default function HeroSection() {
                         ))}
                     </motion.div>
                 </div>
-            </motion.div>
+            </div>
 
             {/* Scroll indicator */}
             <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">

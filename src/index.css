@@ -73,16 +73,16 @@ html.light textarea::placeholder {
 
 /* ========== Glass ========== */
 .glass {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(32px);
-  -webkit-backdrop-filter: blur(32px);
+  background: rgba(255, 255, 255, 0.055);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.045);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   border: 1px solid rgba(124, 58, 237, 0.12);
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -371,13 +371,11 @@ html.light .noise::after {
 
   0%,
   100% {
-    opacity: 0.3;
-    filter: blur(60px)
+    opacity: 0.3
   }
 
   50% {
-    opacity: 0.6;
-    filter: blur(80px)
+    opacity: 0.5
   }
 }
 
@@ -455,10 +453,124 @@ html.light .noise::after {
   box-shadow: 0 0 18px currentColor;
 }
 
-@media (min-width: 1921px) {
-  canvas {
-    max-height: 1080px;
-  }
+.noise::after {
+  display: none;
+}
+
+.animate-glow-breathe {
+  animation: none;
+}
+
+[class*="blur-"]:not([class*="backdrop-blur"]) {
+  filter: blur(32px) !important;
+}
+
+[class*="blur-"][class*="80"]:not([class*="backdrop-blur"]),
+[class*="blur-"][class*="100"]:not([class*="backdrop-blur"]),
+[class*="blur-"][class*="120"]:not([class*="backdrop-blur"]),
+[class*="blur-"][class*="150"]:not([class*="backdrop-blur"]),
+[class*="blur-"][class*="200"]:not([class*="backdrop-blur"]) {
+  filter: blur(40px) !important;
+}
+
+section {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 900px;
+}
+
+.css-house-scene {
+  position: absolute;
+  inset: 0;
+  max-height: 720px;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  perspective: 900px;
+}
+
+.css-house {
+  position: relative;
+  width: min(34vw, 420px);
+  aspect-ratio: 1.25;
+  transform: rotateX(8deg) rotateY(-22deg) rotateZ(-2deg);
+  transform-style: preserve-3d;
+  filter: drop-shadow(0 40px 70px rgba(6, 182, 212, 0.18));
+}
+
+.css-house__body {
+  position: absolute;
+  left: 16%;
+  right: 16%;
+  bottom: 12%;
+  height: 46%;
+  border-radius: 8px;
+  background: linear-gradient(145deg, #12121f, #050510);
+  border: 1px solid rgba(167, 139, 250, 0.18);
+  box-shadow: inset -30px 0 50px rgba(124, 58, 237, 0.1);
+}
+
+.css-house__roof {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 17%;
+  height: 36%;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  box-shadow: 0 18px 45px rgba(124, 58, 237, 0.25);
+}
+
+.css-house__door,
+.css-house__window {
+  position: absolute;
+  bottom: 0;
+  border: 1px solid rgba(6, 182, 212, 0.35);
+  background: linear-gradient(145deg, rgba(6, 182, 212, 0.65), rgba(167, 139, 250, 0.35));
+  box-shadow: 0 0 28px rgba(6, 182, 212, 0.28);
+}
+
+.css-house__door {
+  left: 42%;
+  width: 16%;
+  height: 50%;
+  border-radius: 6px 6px 0 0;
+  background: #050510;
+}
+
+.css-house__window {
+  top: 26%;
+  width: 16%;
+  height: 24%;
+  border-radius: 5px;
+}
+
+.css-house__window--left {
+  left: 18%;
+}
+
+.css-house__window--right {
+  right: 18%;
+}
+
+.css-house__chimney {
+  position: absolute;
+  right: 25%;
+  top: 16%;
+  width: 9%;
+  height: 22%;
+  border-radius: 4px;
+  background: linear-gradient(145deg, #1a1a30, #050510);
+}
+
+.css-house__base {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 7%;
+  height: 9%;
+  border-radius: 9999px;
+  background: radial-gradient(ellipse, rgba(124, 58, 237, 0.34), transparent 68%);
+  filter: blur(6px);
 }
 
 @media (prefers-reduced-motion: reduce) {
