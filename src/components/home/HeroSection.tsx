@@ -1,4 +1,4 @@
-import { useState, Suspense, lazy, useRef, useEffect } from 'react'
+import { useState, Suspense, lazy, useRef, useEffect, useMemo } from 'react'
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion'
 import { MapPin, ArrowRight, Shield, Clock, DollarSign, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -14,6 +14,13 @@ const trustBadges = [
 export default function HeroSection() {
     const [address, setAddress] = useState('')
     const sectionRef = useRef<HTMLDivElement>(null)
+    const floatingParticles = useMemo(() => Array.from({ length: 10 }, (_, i) => ({
+        left: `${(i * 41) % 100}%`,
+        animationDuration: `${9 + (i % 5) * 2}s`,
+        animationDelay: `${(i % 4) * 1.4}s`,
+        size: `${1 + (i % 3)}px`,
+        background: i % 3 === 0 ? '#06b6d4' : '#7c3aed',
+    })), [])
 
     /* --- Scroll parallax --- */
     const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
@@ -55,14 +62,14 @@ export default function HeroSection() {
             <motion.div style={{ y: bgY }} className="absolute inset-0 bg-grid-fine pointer-events-none" />
 
             {/* Floating particles */}
-            {Array.from({ length: 15 }).map((_, i) => (
+            {floatingParticles.map((particle, i) => (
                 <div key={i} className="particle" style={{
-                    left: `${Math.random() * 100}%`,
-                    animationDuration: `${8 + Math.random() * 12}s`,
-                    animationDelay: `${Math.random() * 8}s`,
-                    width: `${1 + Math.random() * 2}px`,
-                    height: `${1 + Math.random() * 2}px`,
-                    background: i % 3 === 0 ? '#06b6d4' : '#7c3aed',
+                    left: particle.left,
+                    animationDuration: particle.animationDuration,
+                    animationDelay: particle.animationDelay,
+                    width: particle.size,
+                    height: particle.size,
+                    background: particle.background,
                 }} />
             ))}
 

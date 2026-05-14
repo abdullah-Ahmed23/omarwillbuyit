@@ -448,6 +448,30 @@ html.light .noise::after {
   opacity: 0;
 }
 
+.bg-particle {
+  position: absolute;
+  display: block;
+  border-radius: 9999px;
+  box-shadow: 0 0 18px currentColor;
+}
+
+@media (min-width: 1921px) {
+  canvas {
+    max-height: 1080px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
 /* ========== Dividers ========== */
 .glow-line {
   display: none;

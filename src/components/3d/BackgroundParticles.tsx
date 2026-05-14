@@ -1,14 +1,27 @@
-import { Canvas } from '@react-three/fiber'
-import { Sparkles } from '@react-three/drei'
+const particles = Array.from({ length: 18 }, (_, i) => ({
+    left: `${(i * 37) % 100}%`,
+    top: `${(i * 53) % 100}%`,
+    size: `${1 + (i % 3)}px`,
+    opacity: 0.12 + (i % 4) * 0.04,
+}))
 
 export default function BackgroundParticles() {
     return (
-        <div className="absolute inset-0 pointer-events-none">
-            <Canvas dpr={[1, 1.5]} gl={{ antialias: false, alpha: true }} style={{ background: 'transparent' }}>
-                <Sparkles count={50} scale={10} size={2} speed={0.15} opacity={0.25} color="#7c3aed" />
-                <Sparkles count={25} scale={8} size={1.5} speed={0.1} opacity={0.15} color="#06b6d4" />
-                <Sparkles count={15} scale={6} size={1} speed={0.2} opacity={0.1} color="#a78bfa" />
-            </Canvas>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+            {particles.map((particle, i) => (
+                <span
+                    key={i}
+                    className="bg-particle"
+                    style={{
+                        left: particle.left,
+                        top: particle.top,
+                        width: particle.size,
+                        height: particle.size,
+                        opacity: particle.opacity,
+                        background: i % 3 === 0 ? '#06b6d4' : '#7c3aed',
+                    }}
+                />
+            ))}
         </div>
     )
 }
